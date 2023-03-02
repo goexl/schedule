@@ -4,6 +4,7 @@ type addParams struct {
 	typ    typ
 	worker worker
 	ticker ticker
+	limit  *limitParams
 	id     string
 }
 

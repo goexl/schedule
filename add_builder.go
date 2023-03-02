@@ -42,6 +42,10 @@ func (ab *addBuilder) Fixed(time time.Time) *fixedBuilder {
 	return newFixedBuilder(time, ab.scheduler, ab.params)
 }
 
+func (ab *addBuilder) Limit() *limitBuilder {
+	return newLimitBuilder()
+}
+
 func (ab *addBuilder) Build() *add {
 	return newAdd(ab.scheduler, ab.params)
 }
