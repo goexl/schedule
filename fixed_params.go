@@ -52,7 +52,7 @@ func (fp *fixedParams) tick() string {
 
 	delay := fp.delay()
 	if 0 < delay {
-		fp.runtime.Add(delay)
+		fp.runtime = fp.runtime.Add(delay)
 	}
 
 	// 如果当前时间还是比当前时间小，需要增加一点延迟保证任务一定会被调度
