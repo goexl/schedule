@@ -1,15 +1,17 @@
 package schedule
 
 type add struct {
-	params *addParams
+	scheduler *Scheduler
+	params    *addParams
 }
 
-func newAdd(params *addParams) *add {
+func newAdd(scheduler *Scheduler, params *addParams) *add {
 	return &add{
-		params: params,
+		scheduler: scheduler,
+		params:    params,
 	}
 }
 
-func (a *add) Put() (id string, err error) {
-
+func (a *add) Put() (string, error) {
+	return a.scheduler.add(a.params)
 }

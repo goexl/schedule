@@ -7,6 +7,7 @@ import (
 type addParams struct {
 	typ    typ
 	worker worker
+	ticker ticker
 
 	cron         string
 	time         time.Time

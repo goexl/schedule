@@ -1,16 +1,20 @@
 package schedule
 
 import (
+	"time"
+
 	"github.com/goexl/gox"
 )
 
 type addBuilder struct {
-	params *addParams
+	scheduler *Scheduler
+	params    *addParams
 }
 
-func newAddBuilder(worker worker) *addBuilder {
+func newAddBuilder(scheduler *Scheduler, worker worker) *addBuilder {
 	return &addBuilder{
-		params: newAddParams(worker),
+		scheduler: scheduler,
+		params:    newAddParams(worker),
 	}
 }
 
@@ -18,4 +22,20 @@ func (ab *addBuilder) Id(id any) *addBuilder {
 	ab.params.id = gox.ToString(id)
 
 	return ab
+}
+
+func (ab *addBuilder) Duration(duration time.Duration) *addBuilder {
+	ab.params.ticker = newDurationTicker(duration)
+
+	return ab
+}
+
+func (ab *addBuilder) Cron(cron string) *addBuilder {
+	ab.params.ticker = newCronTicker(cron)
+
+	return ab
+}
+
+func (ab *addBuilder) Build() *add {
+	return newAdd(ab.scheduler, ab.params)
 }

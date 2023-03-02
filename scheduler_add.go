@@ -8,23 +8,23 @@ import (
 	"github.com/rs/xid"
 )
 
-func (s *Scheduler) add(_options *addParams) (id string, err error) {
-	if "" == _options.id {
+func (s *Scheduler) add(params *addParams) (id string, err error) {
+	if "" == params.id {
 		id = xid.New().String()
 	}
 
 	var entryId cron.EntryID
-	switch _options.scheduleType {
+	switch params.scheduleType {
 	case typeCron:
-		entryId, err = s.cron.AddFunc(_options.cron, func() {
+		entryId, err = s.cron.AddFunc(params.cron, func() {
 			_ = executor.Run()
 		})
 	case typeDuration:
-		entryId, err = s.cron.AddFunc(fmt.Sprintf("@every %s", _options.duration.String()), func() {
+		entryId, err = s.cron.AddFunc(fmt.Sprintf("@every %s", params.duration.String()), func() {
 			_ = executor.Run()
 		})
 	case typeTime:
-		entryId, err = s.cron.AddFunc(fixTimeSpec(_options.time, _options.delayMaxRand, _options.delay), func() {
+		entryId, err = s.cron.AddFunc(fixTimeSpec(params.time, params.delayMaxRand, params.delay), func() {
 			_ = executor.Run()
 		})
 	}
