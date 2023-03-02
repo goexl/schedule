@@ -1,4 +1,4 @@
-# 项目
+# 计划任务
 [![编译状态](https://github.ruijc.com:20443/api/badges/goexl/gox/status.svg)](https://github.ruijc.com:20443/pangum/pangu)
 [![Golang质量](https://goreportcard.com/badge/github.com/goexl/gox)](https://goreportcard.com/report/github.com/pangum/pangu)
 ![版本](https://img.shields.io/github/go-mod/go-version/goexl/gox)
@@ -9,7 +9,11 @@
 ![最佳语言](https://img.shields.io/github/languages/top/goexl/gox)
 ![星星个数](https://img.shields.io/github/stars/goexl/gox?style=social)
 
-项目介绍
+计划任务，支持
+- Cron表达式
+- 周期任务
+- 固定时间任务
+- 随时时间任务
 
 ## 捐助
 
