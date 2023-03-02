@@ -16,6 +16,11 @@ func (s *Scheduler) add(params *addParams) (id string, err error) {
 }
 
 func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
+	// 检查任务是否已经存在
+	if s.params.unique && s.Contains(params.id) {
+		return
+	}
+
 	// 检查限制是否符合要求，如果不符合，不返回任何值
 	if !params.limit.check(s) {
 		return
@@ -23,7 +28,7 @@ func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
 
 	switch params.typ {
 	case typeCron, typeDuration, typeFixed:
-		id, err = s.cron.AddJob(params.ticker.tick(), newDefaultJob(s.logger, params.worker))
+		id, err = s.cron.AddJob(params.ticker.tick(), newDefaultJob(s.params.logger, params.worker))
 	}
 
 	return

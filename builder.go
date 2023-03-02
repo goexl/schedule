@@ -5,21 +5,27 @@ import (
 )
 
 type builder struct {
-	logger simaqian.Logger
+	params *params
 }
 
 func newBuilder() *builder {
 	return &builder{
-		logger: simaqian.Default(),
+		params: newParams(),
 	}
 }
 
 func (b *builder) Logger(logger simaqian.Logger) *builder {
-	b.logger = logger
+	b.params.logger = logger
+
+	return b
+}
+
+func (b *builder) Unique() *builder {
+	b.params.unique = true
 
 	return b
 }
 
 func (b *builder) Build() *Scheduler {
-	return newScheduler(b.logger)
+	return newScheduler(b.params)
 }

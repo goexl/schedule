@@ -4,23 +4,22 @@ import (
 	"sync"
 
 	"github.com/goexl/gox"
-	"github.com/goexl/simaqian"
 	"github.com/robfig/cron/v3"
 )
 
 // Scheduler 任务计划组织程序
 type Scheduler struct {
-	logger simaqian.Logger
 	cron   *cron.Cron
 	ids    *sync.Map
+	params *params
 
 	started bool
 	stopped bool
 }
 
-func newScheduler(logger simaqian.Logger) (scheduler *Scheduler) {
+func newScheduler(params *params) (scheduler *Scheduler) {
 	scheduler = &Scheduler{
-		logger: logger,
+		params: params,
 		cron:   cron.New(cron.WithSeconds()),
 		ids:    new(sync.Map),
 
