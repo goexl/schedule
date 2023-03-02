@@ -11,13 +11,13 @@ func newLimitBuilder() *limitBuilder {
 	}
 }
 
-func (lb *limitBuilder) Cpu(percent int) *limitBuilder {
+func (lb *limitBuilder) Cpu(percent float64) *limitBuilder {
 	lb.params.cpu = percent
 
 	return lb
 }
 
-func (lb *limitBuilder) Memory(percent int) *limitBuilder {
+func (lb *limitBuilder) Memory(percent float64) *limitBuilder {
 	lb.params.memory = percent
 
 	return lb
@@ -25,6 +25,12 @@ func (lb *limitBuilder) Memory(percent int) *limitBuilder {
 
 func (lb *limitBuilder) Process(count int) *limitBuilder {
 	lb.params.process = count
+
+	return lb
+}
+
+func (lb *limitBuilder) Max(max int) *limitBuilder {
+	lb.params.max = max
 
 	return lb
 }
