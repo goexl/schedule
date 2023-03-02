@@ -47,6 +47,7 @@ func (fb *fixedBuilder) Delay(duration time.Duration) *fixedBuilder {
 }
 
 func (fb *fixedBuilder) Build() (_add *add) {
+	fb.params.typ = typeFixed
 	fb.params.ticker = newFixedTicker(fb.self)
 	_add = newAdd(fb.scheduler, fb.params)
 

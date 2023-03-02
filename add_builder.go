@@ -25,12 +25,14 @@ func (ab *addBuilder) Id(id any) *addBuilder {
 }
 
 func (ab *addBuilder) Duration(duration time.Duration) *addBuilder {
+	ab.params.typ = typeDuration
 	ab.params.ticker = newDurationTicker(duration)
 
 	return ab
 }
 
 func (ab *addBuilder) Cron(cron string) *addBuilder {
+	ab.params.typ = typeCron
 	ab.params.ticker = newCronTicker(cron)
 
 	return ab

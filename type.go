@@ -3,7 +3,7 @@ package schedule
 const (
 	typeCron typ = iota
 	typeDuration
-	typeTime
+	typeFixed
 )
 
 type typ uint8

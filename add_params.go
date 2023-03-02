@@ -9,7 +9,7 @@ type addParams struct {
 
 func newAddParams(worker worker) *addParams {
 	return &addParams{
-		typ:    typeTime,
+		typ:    typeFixed,
 		worker: worker,
 	}
 }
