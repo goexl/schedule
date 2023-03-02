@@ -21,7 +21,8 @@ func (b *builder) Logger(logger simaqian.Logger) *builder {
 }
 
 func (b *builder) Unique() *builder {
-	b.params.unique = true
+	unique:=true
+	b.params.unique = &unique
 
 	return b
 }

@@ -6,6 +6,7 @@ type addParams struct {
 	ticker ticker
 	limit  *limitParams
 	id     string
+	unique *bool
 }
 
 func newAddParams(worker worker) *addParams {

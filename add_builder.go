@@ -46,6 +46,13 @@ func (ab *addBuilder) Limit() *limitBuilder {
 	return newLimitBuilder()
 }
 
+func (ab *addBuilder) Unique() *addBuilder {
+	unique := true
+	ab.params.unique = &unique
+
+	return ab
+}
+
 func (ab *addBuilder) Build() *add {
 	return newAdd(ab.scheduler, ab.params)
 }
