@@ -36,6 +36,10 @@ func (ab *addBuilder) Cron(cron string) *addBuilder {
 	return ab
 }
 
+func (ab *addBuilder) Fixed(time time.Time) *fixedBuilder {
+	return newFixedBuilder(time, ab.scheduler, ab.params)
+}
+
 func (ab *addBuilder) Build() *add {
 	return newAdd(ab.scheduler, ab.params)
 }
