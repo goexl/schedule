@@ -3,7 +3,6 @@ package schedule
 import (
 	"crypto/rand"
 	"math/big"
-	"strings"
 	"time"
 
 	"github.com/goexl/gox"
@@ -60,30 +59,5 @@ func (fp *fixedParams) tick() string {
 		fp.runtime = time.Now().Add(time.Second)
 	}
 
-	builder := new(strings.Builder)
-	// 秒
-	builder.WriteString(gox.ToString(fp.runtime.Second()))
-	builder.WriteString(space)
-
-	// 分钟
-	builder.WriteString(gox.ToString(fp.runtime.Minute()))
-	builder.WriteString(space)
-
-	// 小时
-	builder.WriteString(gox.ToString(fp.runtime.Hour()))
-	builder.WriteString(space)
-
-	// 日
-	builder.WriteString(gox.ToString(fp.runtime.Day()))
-	builder.WriteString(space)
-
-	// 月
-	builder.WriteString(gox.ToString(fp.runtime.Month()))
-	builder.WriteString(space)
-
-	// 周
-	builder.WriteString(gox.ToString(fp.runtime.Weekday()))
-	builder.WriteString(space)
-
-	return builder.String()
+	return newRuntime(fp.runtime).spec()
 }

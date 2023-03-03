@@ -11,8 +11,9 @@ type addParams struct {
 
 func newAddParams(worker worker) *addParams {
 	return &addParams{
-		typ:    typeFixed,
+		typ:    typeImmediately,
 		worker: worker,
+		ticker: newImmediatelyTicker(),
 	}
 }
 
