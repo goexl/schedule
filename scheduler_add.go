@@ -3,12 +3,11 @@ package schedule
 import (
 	"github.com/goexl/gox"
 	"github.com/robfig/cron/v3"
-	"github.com/rs/xid"
 )
 
 func (s *Scheduler) add(params *addParams) (id string, err error) {
 	if eid, ae := s.addToCron(params); nil == ae {
-		id = gox.Ift("" == params.id, xid.New().String(), gox.ToString(eid))
+		id = gox.Ift("" == params.id, params.id, gox.ToString(eid))
 		s.ids.Store(id, eid)
 	}
 
@@ -25,7 +24,7 @@ func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
 	}
 
 	// 检查限制是否符合要求，如果不符合，不返回任何值
-	if !params.limit.check(s) {
+	if !params.checkLimit(s) {
 		return
 	}
 

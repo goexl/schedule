@@ -43,7 +43,7 @@ func (ab *addBuilder) Fixed(time time.Time) *fixedBuilder {
 }
 
 func (ab *addBuilder) Limit() *limitBuilder {
-	return newLimitBuilder()
+	return newLimitBuilder(ab)
 }
 
 func (ab *addBuilder) Unique() *addBuilder {

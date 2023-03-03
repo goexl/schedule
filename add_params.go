@@ -15,3 +15,13 @@ func newAddParams(worker worker) *addParams {
 		worker: worker,
 	}
 }
+
+func (ap *addParams) checkLimit(scheduler *Scheduler) (checked bool) {
+	if nil == ap.limit {
+		checked = true
+	} else {
+		checked = ap.limit.check(scheduler)
+	}
+
+	return
+}

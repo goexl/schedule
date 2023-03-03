@@ -5,9 +5,10 @@ type limitBuilder struct {
 	builder *addBuilder
 }
 
-func newLimitBuilder() *limitBuilder {
+func newLimitBuilder(builder *addBuilder) *limitBuilder {
 	return &limitBuilder{
-		params: newLimitParams(),
+		params:  newLimitParams(),
+		builder: builder,
 	}
 }
 
