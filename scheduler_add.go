@@ -19,7 +19,7 @@ func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
 	// 检查任务是否已经存在
 	// 判断逻辑，优先看添加参数里是否要求唯一
 	// 再看整体配置里是否要求唯一
-	unique:=gox.Ift(nil!=params.unique, *params.unique, gox.If(nil!=s.params.unique, *s.params.unique))
+	unique := gox.Ift(params.unique, params.unique, gox.If(s.params.unique, s.params.unique))
 	if unique && s.Contains(params.id) {
 		return
 	}

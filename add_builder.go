@@ -47,8 +47,7 @@ func (ab *addBuilder) Limit() *limitBuilder {
 }
 
 func (ab *addBuilder) Unique() *addBuilder {
-	unique := true
-	ab.params.unique = &unique
+	ab.params.unique = true
 
 	return ab
 }
