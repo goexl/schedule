@@ -13,7 +13,6 @@ func newAddParams(worker worker) *addParams {
 	return &addParams{
 		typ:    typeImmediately,
 		worker: worker,
-		ticker: newImmediatelyTicker(),
 	}
 }
 
