@@ -1,5 +1,9 @@
 package schedule
 
+import (
+	"time"
+)
+
 type addParams struct {
 	typ    typ
 	worker worker
@@ -7,12 +11,14 @@ type addParams struct {
 	limit  *limitParams
 	id     string
 	unique bool
+	delay  time.Duration
 }
 
 func newAddParams(worker worker) *addParams {
 	return &addParams{
 		typ:    typeImmediately,
 		worker: worker,
+		delay:  time.Second,
 	}
 }
 

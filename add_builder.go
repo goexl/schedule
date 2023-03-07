@@ -24,6 +24,12 @@ func (ab *addBuilder) Id(id any) *addBuilder {
 	return ab
 }
 
+func (ab *addBuilder) Delay(delay time.Duration) *addBuilder {
+	ab.params.delay = delay
+
+	return ab
+}
+
 func (ab *addBuilder) Duration(duration time.Duration) *addBuilder {
 	ab.params.typ = typeDuration
 	ab.params.ticker = newDurationTicker(duration)

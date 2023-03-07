@@ -9,16 +9,19 @@ import (
 var _ cron.Schedule = (*scheduleOnce)(nil)
 
 type scheduleOnce struct {
+	id     *cron.EntryID
+	cron   *cron.Cron
+	params *addParams
+
 	executed bool
-	id       *cron.EntryID
-	cron     *cron.Cron
 }
 
-func newScheduleOnce(id *cron.EntryID, cron *cron.Cron) *scheduleOnce {
+func newScheduleOnce(id *cron.EntryID, cron *cron.Cron, params *addParams) *scheduleOnce {
 	return &scheduleOnce{
 		executed: false,
 		id:       id,
 		cron:     cron,
+		params:   params,
 	}
 }
 
@@ -31,7 +34,7 @@ func (so *scheduleOnce) Next(from time.Time) (runtime time.Time) {
 	if from.Before(time.Now()) {
 		from = time.Now()
 	}
-	runtime = from.Add(100 * time.Millisecond)
+	runtime = from.Add(so.params.delay)
 	so.executed = true
 
 	return
