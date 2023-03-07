@@ -9,7 +9,7 @@ import (
 
 func TestImmediately(t *testing.T) {
 	schedule.New().Delay(100 * time.Millisecond).Build().Add(newImmediatelyWorker()).Build().Put()
-	time.Sleep(time.Hour)
+	time.Sleep(5*time.Second)
 	if 1 != immediately {
 		t.Fatalf("期望：1，实际：%d", immediately)
 	}
