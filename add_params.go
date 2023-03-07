@@ -18,7 +18,6 @@ func newAddParams(worker worker) *addParams {
 	return &addParams{
 		typ:    typeImmediately,
 		worker: worker,
-		delay:  time.Second,
 	}
 }
 
