@@ -10,14 +10,14 @@ import (
 var _ cron.Job = (*jobDefault)(nil)
 
 type jobDefault struct {
-	logger simaqian.Logger
 	worker worker
+	logger simaqian.Logger
 }
 
-func newDefaultJob(logger simaqian.Logger, worker worker) *jobDefault {
+func newDefaultJob(worker worker, logger simaqian.Logger) *jobDefault {
 	return &jobDefault{
-		logger: logger,
 		worker: worker,
+		logger: logger,
 	}
 }
 

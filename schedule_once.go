@@ -16,30 +16,36 @@ type scheduleOnce struct {
 	params *params
 	add    *addParams
 
-	executed bool
+	delay      time.Duration
+	_completed bool
 }
 
 func newScheduleOnce(id *cron.EntryID, cron *cron.Cron, params *params, add *addParams) *scheduleOnce {
 	return &scheduleOnce{
-		executed: false,
-		id:       id,
-		cron:     cron,
-		params:   params,
-		add:      add,
+		_completed: false,
+		id:         id,
+		cron:       cron,
+		params:     params,
+		add:        add,
 	}
 }
 
 func (so *scheduleOnce) Next(from time.Time) (next time.Time) {
 	// 只执行一次
-	if so.executed {
+	if so._completed {
+		// 调度到一个完全不可能得到执行的时间
 		next = time.Now().Add(math.MaxInt64)
+		// 删除原来的任务，确保不会再被执行
 		go so.cron.Remove(*so.id)
 	} else {
 		next = so.next(from)
-		so.executed = true
 	}
 
 	return
+}
+
+func (so *scheduleOnce) completed() {
+	so._completed = true
 }
 
 func (so *scheduleOnce) next(from time.Time) (next time.Time) {
@@ -50,8 +56,8 @@ func (so *scheduleOnce) next(from time.Time) (next time.Time) {
 		return so.add.delay
 	}, func() time.Duration {
 		return gox.Ift(0 != so.params.delay, so.params.delay, 100*time.Millisecond)
-	}))
-	so.executed = true
+	})).Add(so.delay)
+	so.delay += 100 * time.Millisecond
 
 	return
 }
