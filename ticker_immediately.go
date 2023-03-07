@@ -13,5 +13,5 @@ func newImmediatelyTicker() *immediatelyTicker {
 }
 
 func (it *immediatelyTicker) tick() string {
-	return newRuntime(time.Now().Add(100 * time.Millisecond)).spec()
+	return newRuntime(time.Now().Add(time.Second)).spec()
 }
