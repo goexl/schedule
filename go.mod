@@ -6,7 +6,6 @@ require (
 	github.com/goexl/gox v0.2.5
 	github.com/goexl/simaqian v0.2.3
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/rs/xid v1.4.0
 	github.com/shirou/gopsutil/v3 v3.23.2
 )
 
