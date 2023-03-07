@@ -34,8 +34,8 @@ func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
 		tick := params.ticker.tick()
 		id, err = s.cron.AddJob(tick, job)
 	case typeImmediately:
-		once := newScheduleOnce(&id, s.cron, s.params, params)
-		job := newOnceJob(once, params.worker, s.params.logger)
+		once := newScheduleOnce(s.params, params)
+		job := newOnceJob(&id, s.cron, params.worker, s.params.logger)
 		id = s.cron.Schedule(once, job)
 	}
 

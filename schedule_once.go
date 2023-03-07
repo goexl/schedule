@@ -1,7 +1,6 @@
 package schedule
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/goexl/gox"
@@ -11,18 +10,15 @@ import (
 var _ cron.Schedule = (*scheduleOnce)(nil)
 
 type scheduleOnce struct {
-	id     *cron.EntryID
-	cron   *cron.Cron
+
 	params *params
 	add    *addParams
 
 	delay      time.Duration
 }
 
-func newScheduleOnce(id *cron.EntryID, cron *cron.Cron, params *params, add *addParams) *scheduleOnce {
+func newScheduleOnce(params *params, add *addParams) *scheduleOnce {
 	return &scheduleOnce{
-		id:         id,
-		cron:       cron,
 		params:     params,
 		add:        add,
 	}
@@ -38,9 +34,4 @@ func (so *scheduleOnce) Next(from time.Time) (next time.Time) {
 	so.delay += 50 * time.Millisecond
 
 	return
-}
-
-func (so *scheduleOnce) completed() {
-	// 删除原来的任务，确保不会再被执行
-	so.cron.Remove(*so.id)
 }

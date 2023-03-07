@@ -4,25 +4,28 @@ import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/simaqian"
+	"github.com/robfig/cron/v3"
 )
 
 type jobOnce struct {
-	schedule *scheduleOnce
+	id     *cron.EntryID
+	cron   *cron.Cron
 	worker   worker
 	logger   simaqian.Logger
 }
 
-func newOnceJob(schedule *scheduleOnce, worker worker, logger simaqian.Logger) *jobOnce {
+func newOnceJob(id *cron.EntryID, cron *cron.Cron, worker worker, logger simaqian.Logger) *jobOnce {
 	return &jobOnce{
-		schedule: schedule,
+		id:id,
+		cron:cron,
 		worker:   worker,
 		logger:   logger,
 	}
 }
 
 func (jo *jobOnce) Run() {
-	// 必须执行完成
-	defer jo.schedule.completed()
+	// 删除原来的任务，确保不会再被执行
+	defer jo.cron.Remove(*jo.id)
 
 	fields := gox.Fields[any]{
 		field.New("worker", jo.worker),
