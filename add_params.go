@@ -21,11 +21,9 @@ func newAddParams(worker worker) *addParams {
 	}
 }
 
-func (ap *addParams) checkLimit(scheduler *Scheduler) (checked bool) {
-	if nil == ap.limit {
-		checked = true
-	} else {
-		checked = ap.limit.check(scheduler)
+func (ap *addParams) checkLimit(scheduler *Scheduler) (err error) {
+	if nil != ap.limit {
+		err = ap.limit.check(scheduler)
 	}
 
 	return

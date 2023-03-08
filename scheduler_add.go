@@ -9,7 +9,9 @@ func (s *Scheduler) add(params *addParams) (id string, err error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	if eid, ae := s.addToCron(&id, params); nil == ae {
+	if eid, ae := s.addToCron(&id, params); nil != ae {
+		err = ae
+	} else {
 		id = gox.Ift("" != params.id, params.id, gox.ToString(eid))
 		s.ids.Store(id, eid)
 	}
@@ -27,7 +29,7 @@ func (s *Scheduler) addToCron(id *string, params *addParams) (eid cron.EntryID, 
 	}
 
 	// 检查限制是否符合要求，如果不符合，不返回任何值
-	if !params.checkLimit(s) {
+	if err = params.checkLimit(s); nil != err {
 		return
 	}
 

@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/goexl/gox"
+	"github.com/goexl/exc"
 	"github.com/goexl/gox/field"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/mem"
@@ -27,51 +27,55 @@ func newLimitParams() *limitParams {
 	}
 }
 
-func (lp *limitParams) check(scheduler *Scheduler) bool {
-	return lp.checkCount(scheduler) && lp.checkProcess(scheduler) && lp.checkCpu(scheduler) && lp.checkMemory(scheduler)
-}
-
-func (lp *limitParams) checkMemory(scheduler *Scheduler) (success bool) {
-	vms, vme := mem.VirtualMemory()
-	success = gox.If(nil == vme, vms.UsedPercent < lp.memory)
-	if !success {
-		lp.log(scheduler, field.New("memory", vms.UsedPercent), field.New("limit", lp.memory))
+func (lp *limitParams) check(scheduler *Scheduler) (err error) {
+	if ce := lp.checkCount(scheduler); nil != ce {
+		err = ce
+	} else if pe := lp.checkProcess(); nil != pe {
+		err = pe
+	} else if ce := lp.checkCpu(); nil != ce {
+		err = ce
+	} else if me := lp.checkMemory(); nil != me {
+		err = me
 	}
 
 	return
 }
 
-func (lp *limitParams) checkCpu(scheduler *Scheduler) (success bool) {
-	percent, pe := cpu.Percent(time.Second, false)
-	success = gox.If(nil == pe, percent[0] < lp.cpu)
-	if !success {
-		lp.log(scheduler, field.New("cpu", percent[0]), field.New("limit", lp.cpu))
+func (lp *limitParams) checkMemory() (err error) {
+	if vms, vme := mem.VirtualMemory(); nil != vme {
+		err = vme
+	} else if vms.UsedPercent >= lp.memory {
+		err = exc.NewFields("内存限制不通过", field.New("memory", vms.UsedPercent), field.New("limit", lp.memory))
 	}
 
 	return
 }
 
-func (lp *limitParams) checkProcess(scheduler *Scheduler) (success bool) {
-	ids, pe := process.Pids()
-	process := len(ids)
-	success = gox.If(nil == pe, process <= lp.process)
-	if !success {
-		lp.log(scheduler, field.New("process", process), field.New("limit", lp.process))
+func (lp *limitParams) checkCpu() (err error) {
+	if percent, pe := cpu.Percent(time.Second, false); nil != pe {
+		err = pe
+	} else if percent[0] >= lp.cpu {
+		err = exc.NewFields("Cpu限制不通过", field.New("cpu", percent[0]), field.New("limit", lp.cpu))
 	}
 
 	return
 }
 
-func (lp *limitParams) checkCount(scheduler *Scheduler) (success bool) {
+func (lp *limitParams) checkProcess() (err error) {
+	if ids, pe := process.Pids(); nil != pe {
+		err = pe
+	} else if len(ids) >= lp.process {
+		err = exc.NewFields("进程数量限制不通过", field.New("process", len(ids)), field.New("limit", lp.process))
+	}
+
+	return
+}
+
+func (lp *limitParams) checkCount(scheduler *Scheduler) (err error) {
 	count := scheduler.Count()
-	success = count <= lp.max
-	if !success {
-		lp.log(scheduler, field.New("count", count), field.New("limit", lp.max))
+	if count > lp.max {
+		err = exc.NewFields("任务数量限制不通过", field.New("count", count), field.New("limit", lp.max))
 	}
 
 	return
-}
-
-func (lp *limitParams) log(scheduler *Scheduler, fields ...gox.Field[any]) {
-	scheduler.params.logger.Info("限制检查未通过", fields...)
 }
