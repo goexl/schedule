@@ -6,7 +6,10 @@ import (
 )
 
 func (s *Scheduler) add(params *addParams) (id string, err error) {
-	if eid, ae := s.addToCron(params); nil == ae {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	if eid, ae := s.addToCron(&id, params); nil == ae {
 		id = gox.Ift("" != params.id, params.id, gox.ToString(eid))
 		s.ids.Store(id, eid)
 	}
@@ -14,7 +17,7 @@ func (s *Scheduler) add(params *addParams) (id string, err error) {
 	return
 }
 
-func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
+func (s *Scheduler) addToCron(id *string, params *addParams) (eid cron.EntryID, err error) {
 	// 检查任务是否已经存在
 	// 判断逻辑，优先看添加参数里是否要求唯一
 	// 再看整体配置里是否要求唯一
@@ -32,11 +35,11 @@ func (s *Scheduler) addToCron(params *addParams) (id cron.EntryID, err error) {
 	case typeCron, typeDuration, typeFixed:
 		job := newDefaultJob(params.worker, s.params.logger)
 		tick := params.ticker.tick()
-		id, err = s.cron.AddJob(tick, job)
+		eid, err = s.cron.AddJob(tick, job)
 	case typeImmediately:
 		once := newScheduleOnce(s.params, params)
-		job := newOnceJob(&id, s.cron, params.worker, s.params.logger)
-		id = s.cron.Schedule(once, job)
+		job := newOnceJob(id, s, params.worker, s.params.logger)
+		eid = s.cron.Schedule(once, job)
 	}
 
 	return

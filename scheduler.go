@@ -13,6 +13,7 @@ type Scheduler struct {
 	ids    *sync.Map
 	params *params
 
+	mutex   *sync.Mutex
 	started bool
 	stopped bool
 }
@@ -23,6 +24,7 @@ func newScheduler(params *params) (scheduler *Scheduler) {
 		cron:   cron.New(cron.WithSeconds()),
 		ids:    new(sync.Map),
 
+		mutex:   new(sync.Mutex),
 		started: false,
 		stopped: false,
 	}
@@ -50,6 +52,9 @@ func (s *Scheduler) Stop() {
 }
 
 func (s *Scheduler) Remove(id any) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	id = gox.ToString(id)
 	if entry, ok := s.ids.Load(id); ok {
 		s.cron.Remove(entry.(cron.EntryID))
@@ -58,6 +63,9 @@ func (s *Scheduler) Remove(id any) {
 }
 
 func (s *Scheduler) Clear() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	for _, entry := range s.cron.Entries() {
 		s.cron.Remove(entry.ID)
 	}
@@ -65,7 +73,8 @@ func (s *Scheduler) Clear() {
 }
 
 func (s *Scheduler) Contains(id any) (contains bool) {
-	_, contains = s.ids.Load(gox.ToString(id))
+	id = gox.ToString(id)
+	_, contains = s.ids.Load(id)
 
 	return
 }
