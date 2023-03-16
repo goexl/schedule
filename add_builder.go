@@ -44,12 +44,18 @@ func (ab *addBuilder) Cron(cron string) *addBuilder {
 	return ab
 }
 
-func (ab *addBuilder) Fixed(time time.Time) *fixedBuilder {
-	return newFixedBuilder(ab, time)
+func (ab *addBuilder) Fixed(time time.Time) (builder *fixedBuilder) {
+	ab.params.typ = typeFixed
+	builder = newFixedBuilder(ab, time)
+
+	return
 }
 
-func (ab *addBuilder) Random() *randomBuilder {
-	return newRandomBuilder(ab)
+func (ab *addBuilder) Random() (builder *randomBuilder) {
+	ab.params.typ = typeRandom
+	builder = newRandomBuilder(ab)
+
+	return
 }
 
 func (ab *addBuilder) Limit() *limitBuilder {

@@ -28,8 +28,16 @@ func (db *durationBuilder) To(duration time.Duration) *durationBuilder {
 	return db
 }
 
-func (db *durationBuilder) Build() *addBuilder {
-	db.builder.params.schedule = newScheduleDuration(db.params)
+func (db *durationBuilder) Between(from time.Duration, to time.Duration) *durationBuilder {
+	db.params.from = from
+	db.params.to = to
 
-	return db.builder
+	return db
+}
+
+func (db *durationBuilder) Build() (builder *addBuilder) {
+	db.builder.params.schedule = newScheduleDuration(db.params)
+	builder = db.builder
+
+	return
 }

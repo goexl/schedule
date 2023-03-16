@@ -14,6 +14,7 @@ type addParams struct {
 	limit    *limitParams
 	id       string
 	unique   bool
+	echo     bool
 	delay    time.Duration
 }
 

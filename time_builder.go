@@ -28,8 +28,16 @@ func (tb *timeBuilder) To(time time.Time) *timeBuilder {
 	return tb
 }
 
-func (tb *timeBuilder) Build() *addBuilder {
-	tb.builder.params.schedule = newScheduleTime(tb.params)
+func (tb *timeBuilder) Between(from time.Time, to time.Time) *timeBuilder {
+	tb.params.from = from
+	tb.params.to = to
 
-	return tb.builder
+	return tb
+}
+
+func (tb *timeBuilder) Build() (builder *addBuilder) {
+	tb.builder.params.schedule = newScheduleTime(tb.params)
+	builder = tb.builder
+
+	return
 }

@@ -9,6 +9,7 @@ import (
 type params struct {
 	logger simaqian.Logger
 	unique bool
+	echo   bool
 	delay  time.Duration
 }
 

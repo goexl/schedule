@@ -10,16 +10,10 @@ func newRandomBuilder(builder *addBuilder) *randomBuilder {
 	}
 }
 
-func (rb *randomBuilder) Duration() (builder *durationBuilder) {
-	rb.builder.params.typ = typeRandomDuration
-	builder = newDurationBuilder(rb.builder)
-
-	return
+func (rb *randomBuilder) Duration() *durationBuilder {
+	return newDurationBuilder(rb.builder)
 }
 
-func (rb *randomBuilder) Time() (builder *timeBuilder) {
-	rb.builder.params.typ = typeRandomTime
-	builder = newTimeBuilder(rb.builder)
-
-	return
+func (rb *randomBuilder) Time() *timeBuilder {
+	return newTimeBuilder(rb.builder)
 }

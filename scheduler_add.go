@@ -42,6 +42,9 @@ func (s *Scheduler) addToCron(id *string, params *addParams) (eid cron.EntryID, 
 		once := newScheduleOnce(s.params, params)
 		job := newOnceJob(id, s, params.worker, s.params.logger)
 		eid = s.cron.Schedule(once, job)
+	case typeRandom:
+		job := newDefaultJob(params.worker, s.params.logger)
+		eid = s.cron.Schedule(params.schedule, job)
 	}
 
 	return
