@@ -29,7 +29,7 @@ func (db *durationBuilder) To(duration time.Duration) *durationBuilder {
 }
 
 func (db *durationBuilder) Build() *addBuilder {
-	db.builder.params.schedule = newScheduleDuration()
+	db.builder.params.schedule = newScheduleDuration(db.params)
 
 	return db.builder
 }

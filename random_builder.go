@@ -16,3 +16,10 @@ func (rb *randomBuilder) Duration() (builder *durationBuilder) {
 
 	return
 }
+
+func (rb *randomBuilder) Time() (builder *timeBuilder) {
+	rb.builder.params.typ = typeRandomTime
+	builder = newTimeBuilder(rb.builder)
+
+	return
+}
