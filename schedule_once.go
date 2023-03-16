@@ -10,17 +10,16 @@ import (
 var _ cron.Schedule = (*scheduleOnce)(nil)
 
 type scheduleOnce struct {
-
 	params *params
 	add    *addParams
 
-	delay      time.Duration
+	delay time.Duration
 }
 
 func newScheduleOnce(params *params, add *addParams) *scheduleOnce {
 	return &scheduleOnce{
-		params:     params,
-		add:        add,
+		params: params,
+		add:    add,
 	}
 }
 

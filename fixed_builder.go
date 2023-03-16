@@ -5,51 +5,48 @@ import (
 )
 
 type fixedBuilder struct {
-	scheduler *Scheduler
-	params    *addParams
-	self      *fixedParams
+	builder *addBuilder
+	params  *fixedParams
 }
 
-func newFixedBuilder(time time.Time, scheduler *Scheduler, params *addParams) *fixedBuilder {
+func newFixedBuilder(builder *addBuilder, time time.Time) *fixedBuilder {
 	return &fixedBuilder{
-		scheduler: scheduler,
-		params:    params,
-		self:      newFixedParams(time),
+		builder: builder,
+		params:  newFixedParams(time),
 	}
 }
 
 func (fb *fixedBuilder) Random(duration time.Duration) *fixedBuilder {
-	fb.self.random = true
-	fb.self.max = duration
+	fb.params.random = true
+	fb.params.max = duration
 
 	return fb
 }
 
 func (fb *fixedBuilder) Min(duration time.Duration) *fixedBuilder {
-	fb.self.random = true
-	fb.self.min = duration
+	fb.params.random = true
+	fb.params.min = duration
 
 	return fb
 }
 
 func (fb *fixedBuilder) Between(min time.Duration, max time.Duration) *fixedBuilder {
-	fb.self.random = true
-	fb.self.min = min
-	fb.self.max = max
+	fb.params.random = true
+	fb.params.min = min
+	fb.params.max = max
 
 	return fb
 }
 
 func (fb *fixedBuilder) Delay(duration time.Duration) *fixedBuilder {
-	fb.self.max = duration
+	fb.params.max = duration
 
 	return fb
 }
 
-func (fb *fixedBuilder) Build() (_add *add) {
-	fb.params.typ = typeFixed
-	fb.params.ticker = newFixedTicker(fb.self)
-	_add = newAdd(fb.scheduler, fb.params)
+func (fb *fixedBuilder) Build() (builder *addBuilder) {
+	fb.builder.params.typ = typeFixed
+	fb.builder.params.ticker = newFixedTicker(fb.params)
 
-	return
+	return fb.builder
 }

@@ -2,16 +2,19 @@ package schedule
 
 import (
 	"time"
+
+	"github.com/robfig/cron/v3"
 )
 
 type addParams struct {
-	typ    typ
-	worker worker
-	ticker ticker
-	limit  *limitParams
-	id     string
-	unique bool
-	delay  time.Duration
+	typ      typ
+	worker   worker
+	ticker   ticker
+	schedule cron.Schedule
+	limit    *limitParams
+	id       string
+	unique   bool
+	delay    time.Duration
 }
 
 func newAddParams(worker worker) *addParams {

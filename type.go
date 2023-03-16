@@ -5,6 +5,8 @@ const (
 	typeDuration
 	typeFixed
 	typeImmediately
+	typeRandomDuration
+	typeRandomTime
 )
 
 type typ uint8

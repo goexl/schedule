@@ -45,7 +45,11 @@ func (ab *addBuilder) Cron(cron string) *addBuilder {
 }
 
 func (ab *addBuilder) Fixed(time time.Time) *fixedBuilder {
-	return newFixedBuilder(time, ab.scheduler, ab.params)
+	return newFixedBuilder(ab, time)
+}
+
+func (ab *addBuilder) Random() *randomBuilder {
+	return newRandomBuilder(ab)
 }
 
 func (ab *addBuilder) Limit() *limitBuilder {
