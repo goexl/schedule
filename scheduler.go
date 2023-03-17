@@ -34,7 +34,7 @@ func newScheduler(params *params) (scheduler *Scheduler) {
 }
 
 func (s *Scheduler) Add(worker worker) *addBuilder {
-	return newAddBuilder(s, worker)
+	return newAddBuilder(s, worker, s.params)
 }
 
 func (s *Scheduler) Start() {

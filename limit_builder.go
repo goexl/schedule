@@ -37,7 +37,7 @@ func (lb *limitBuilder) Max(max int) *limitBuilder {
 }
 
 func (lb *limitBuilder) Build() (builder *addBuilder) {
-	lb.builder.params.limit = lb.params
+	lb.builder.self.limit = lb.params
 	builder = lb.builder
 
 	return

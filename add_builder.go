@@ -8,46 +8,48 @@ import (
 
 type addBuilder struct {
 	scheduler *Scheduler
-	params    *addParams
+	self      *addParams
+	params    *params
 }
 
-func newAddBuilder(scheduler *Scheduler, worker worker) *addBuilder {
+func newAddBuilder(scheduler *Scheduler, worker worker, params *params) *addBuilder {
 	return &addBuilder{
 		scheduler: scheduler,
-		params:    newAddParams(scheduler, worker),
+		self:      newAddParams(scheduler, worker),
+		params:    params,
 	}
 }
 
 func (ab *addBuilder) Id(id any) *addBuilder {
-	ab.params.id = gox.ToString(id)
+	ab.self.id = gox.ToString(id)
 
 	return ab
 }
 
 func (ab *addBuilder) Duration(duration time.Duration) *addBuilder {
-	ab.params.typ = typeDuration
-	ab.params.ticker = newDurationTicker(duration)
+	ab.self.typ = typeDuration
+	ab.self.ticker = newDurationTicker(duration)
 
 	return ab
 }
 
 func (ab *addBuilder) Cron(cron string) *addBuilder {
-	ab.params.typ = typeCron
-	ab.params.ticker = newCronTicker(cron)
+	ab.self.typ = typeCron
+	ab.self.ticker = newCronTicker(cron)
 
 	return ab
 }
 
 func (ab *addBuilder) Fixed(time time.Time) *addBuilder {
-	ab.params.typ = typeFixed
-	ab.params.ticker = newFixedTicker(time)
+	ab.self.typ = typeFixed
+	ab.self.ticker = newFixedTicker(time)
 
 	return ab
 }
 
 func (ab *addBuilder) Random() (builder *randomBuilder) {
-	ab.params.typ = typeRandom
-	builder = newRandomBuilder(ab)
+	ab.self.typ = typeRandom
+	builder = newRandomBuilder(ab.params, ab)
 
 	return
 }
@@ -57,11 +59,11 @@ func (ab *addBuilder) Limit() *limitBuilder {
 }
 
 func (ab *addBuilder) Unique() *addBuilder {
-	ab.params.unique = true
+	ab.self.unique = true
 
 	return ab
 }
 
 func (ab *addBuilder) Build() *add {
-	return newAdd(ab.scheduler, ab.params)
+	return newAdd(ab.scheduler, ab.self)
 }

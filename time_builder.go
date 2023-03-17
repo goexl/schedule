@@ -5,38 +5,40 @@ import (
 )
 
 type timeBuilder struct {
+	params  *params
 	builder *addBuilder
-	params  *timeParams
+	self    *timeParams
 }
 
-func newTimeBuilder(builder *addBuilder) *timeBuilder {
+func newTimeBuilder(params *params, builder *addBuilder) *timeBuilder {
 	return &timeBuilder{
+		params:  params,
 		builder: builder,
-		params:  newTimeParams(),
+		self:    newTimeParams(),
 	}
 }
 
 func (tb *timeBuilder) From(time time.Time) *timeBuilder {
-	tb.params.from = time
+	tb.self.from = time
 
 	return tb
 }
 
 func (tb *timeBuilder) To(time time.Time) *timeBuilder {
-	tb.params.to = time
+	tb.self.to = time
 
 	return tb
 }
 
 func (tb *timeBuilder) Between(from time.Time, to time.Time) *timeBuilder {
-	tb.params.from = from
-	tb.params.to = to
+	tb.self.from = from
+	tb.self.to = to
 
 	return tb
 }
 
 func (tb *timeBuilder) Build() (builder *addBuilder) {
-	tb.builder.params.schedule = newScheduleTime(tb.params)
+	tb.builder.self.schedule = newScheduleTime(tb.self, tb.params.logger)
 	builder = tb.builder
 
 	return
