@@ -49,7 +49,7 @@ func (ab *addBuilder) Fixed(time time.Time) *addBuilder {
 
 func (ab *addBuilder) Random() (builder *randomBuilder) {
 	ab.self.typ = typeRandom
-	builder = newRandomBuilder(ab.params, ab)
+	builder = newRandomBuilder(ab.params, ab.self, ab)
 
 	return
 }
@@ -60,6 +60,12 @@ func (ab *addBuilder) Limit() *limitBuilder {
 
 func (ab *addBuilder) Unique() *addBuilder {
 	ab.self.unique = true
+
+	return ab
+}
+
+func (ab *addBuilder) Name(name string) *addBuilder {
+	ab.self.name = name
 
 	return ab
 }

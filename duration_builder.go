@@ -6,14 +6,16 @@ import (
 
 type durationBuilder struct {
 	params  *params
+	add     *addParams
 	builder *addBuilder
 	self    *durationParams
 }
 
-func newDurationBuilder(params *params, builder *addBuilder) *durationBuilder {
+func newDurationBuilder(params *params, add *addParams, builder *addBuilder) *durationBuilder {
 	return &durationBuilder{
 		params:  params,
 		builder: builder,
+		add:     add,
 		self:    newDurationParams(),
 	}
 }
@@ -38,7 +40,7 @@ func (db *durationBuilder) Between(from time.Duration, to time.Duration) *durati
 }
 
 func (db *durationBuilder) Build() (builder *addBuilder) {
-	db.builder.self.schedule = newScheduleDuration(db.self, db.params.logger)
+	db.builder.self.schedule = newScheduleDuration(db.add, db.self, db.params.logger)
 	builder = db.builder
 
 	return

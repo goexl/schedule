@@ -6,13 +6,15 @@ import (
 
 type timeBuilder struct {
 	params  *params
+	add     *addParams
 	builder *addBuilder
 	self    *timeParams
 }
 
-func newTimeBuilder(params *params, builder *addBuilder) *timeBuilder {
+func newTimeBuilder(params *params, add *addParams, builder *addBuilder) *timeBuilder {
 	return &timeBuilder{
 		params:  params,
+		add:     add,
 		builder: builder,
 		self:    newTimeParams(),
 	}
@@ -38,7 +40,7 @@ func (tb *timeBuilder) Between(from time.Time, to time.Time) *timeBuilder {
 }
 
 func (tb *timeBuilder) Build() (builder *addBuilder) {
-	tb.builder.self.schedule = newScheduleTime(tb.self, tb.params.logger)
+	tb.builder.self.schedule = newScheduleTime(tb.add, tb.self, tb.params.logger)
 	builder = tb.builder
 
 	return

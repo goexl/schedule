@@ -13,6 +13,7 @@ type addParams struct {
 	id       string
 	unique   bool
 	echo     bool
+	name     string
 }
 
 func newAddParams(scheduler *Scheduler, worker worker) (add *addParams) {
