@@ -1,17 +1,21 @@
 package schedule
 
+import (
+	"time"
+)
+
 var _ ticker = (*fixedTicker)(nil)
 
 type fixedTicker struct {
-	params *fixedParams
+	time time.Time
 }
 
-func newFixedTicker(params *fixedParams) *fixedTicker {
+func newFixedTicker(time time.Time) *fixedTicker {
 	return &fixedTicker{
-		params: params,
+		time: time,
 	}
 }
 
 func (ft *fixedTicker) tick() string {
-	return ft.params.tick()
+	return newRuntime(ft.time).spec()
 }

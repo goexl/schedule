@@ -3,7 +3,6 @@ package schedule
 import (
 	"time"
 
-	"github.com/goexl/gox"
 	"github.com/robfig/cron/v3"
 )
 
@@ -24,11 +23,7 @@ func newScheduleOnce(params *params, add *addParams) *scheduleOnce {
 }
 
 func (so *scheduleOnce) Next(from time.Time) (next time.Time) {
-	next = from.Add(gox.Ifx(0 != so.add.delay, func() time.Duration {
-		return so.add.delay
-	}, func() time.Duration {
-		return gox.Ift(0 != so.params.delay, so.params.delay, 100*time.Millisecond)
-	})).Add(so.delay)
+	next = from.Add(so.delay)
 	// 以50毫秒为步进值，逐步增加间隔，直到任务被执行
 	so.delay += 50 * time.Millisecond
 

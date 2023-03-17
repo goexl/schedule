@@ -14,18 +14,12 @@ type addBuilder struct {
 func newAddBuilder(scheduler *Scheduler, worker worker) *addBuilder {
 	return &addBuilder{
 		scheduler: scheduler,
-		params:    newAddParams(worker),
+		params:    newAddParams(scheduler, worker),
 	}
 }
 
 func (ab *addBuilder) Id(id any) *addBuilder {
 	ab.params.id = gox.ToString(id)
-
-	return ab
-}
-
-func (ab *addBuilder) Delay(delay time.Duration) *addBuilder {
-	ab.params.delay = delay
 
 	return ab
 }
@@ -44,11 +38,11 @@ func (ab *addBuilder) Cron(cron string) *addBuilder {
 	return ab
 }
 
-func (ab *addBuilder) Fixed(time time.Time) (builder *fixedBuilder) {
+func (ab *addBuilder) Fixed(time time.Time) *addBuilder {
 	ab.params.typ = typeFixed
-	builder = newFixedBuilder(ab, time)
+	ab.params.ticker = newFixedTicker(time)
 
-	return
+	return ab
 }
 
 func (ab *addBuilder) Random() (builder *randomBuilder) {

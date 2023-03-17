@@ -39,9 +39,8 @@ func (s *Scheduler) addToCron(id *string, params *addParams) (eid cron.EntryID, 
 		tick := params.ticker.tick()
 		eid, err = s.cron.AddJob(tick, job)
 	case typeImmediately:
-		once := newScheduleOnce(s.params, params)
 		job := newOnceJob(id, s, params.worker, s.params.logger)
-		eid = s.cron.Schedule(once, job)
+		eid = s.cron.Schedule(params.schedule, job)
 	case typeRandom:
 		job := newDefaultJob(params.worker, s.params.logger)
 		eid = s.cron.Schedule(params.schedule, job)

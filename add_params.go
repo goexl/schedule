@@ -1,8 +1,6 @@
 package schedule
 
 import (
-	"time"
-
 	"github.com/robfig/cron/v3"
 )
 
@@ -15,14 +13,15 @@ type addParams struct {
 	id       string
 	unique   bool
 	echo     bool
-	delay    time.Duration
 }
 
-func newAddParams(worker worker) *addParams {
-	return &addParams{
-		typ:    typeImmediately,
-		worker: worker,
-	}
+func newAddParams(scheduler *Scheduler, worker worker) (add *addParams) {
+	add = new(addParams)
+	add.typ = typeImmediately
+	add.schedule = newScheduleOnce(scheduler.params, add)
+	add.worker = worker
+
+	return
 }
 
 func (ap *addParams) checkLimit(scheduler *Scheduler) (err error) {
