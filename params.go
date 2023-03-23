@@ -7,7 +7,6 @@ import (
 type params struct {
 	logger simaqian.Logger
 	unique bool
-	echo   bool
 }
 
 func newParams() *params {
