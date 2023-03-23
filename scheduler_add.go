@@ -34,10 +34,13 @@ func (s *Scheduler) addToCron(id *string, params *addParams) (eid cron.EntryID, 
 	}
 
 	switch params.typ {
-	case typeCron, typeDuration, typeFixed:
+	case typeCron, typeDuration:
 		job := newDefaultJob(params.worker, s.params.logger)
 		tick := params.ticker.tick()
 		eid, err = s.cron.AddJob(tick, job)
+	case typeFixed:
+		job := newOnceJob(id, s, params.worker, s.params.logger)
+		eid = s.cron.Schedule(params.schedule, job)
 	case typeImmediately:
 		job := newOnceJob(id, s, params.worker, s.params.logger)
 		eid = s.cron.Schedule(params.schedule, job)

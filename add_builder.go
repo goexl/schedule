@@ -42,7 +42,7 @@ func (ab *addBuilder) Cron(cron string) *addBuilder {
 
 func (ab *addBuilder) Fixed(time time.Time) *addBuilder {
 	ab.self.typ = typeFixed
-	ab.self.ticker = newFixedTicker(time)
+	ab.self.schedule = newScheduleFixed(time)
 
 	return ab
 }
