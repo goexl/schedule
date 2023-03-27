@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/goexl/exc v0.0.5
 	github.com/goexl/gox v0.2.8
-	github.com/goexl/simaqian v0.2.3
+	github.com/goexl/simaqian v0.2.4
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil/v3 v3.23.2
 )
