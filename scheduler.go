@@ -76,10 +76,12 @@ func (s *Scheduler) Count() int {
 	return len(s.cron.Entries())
 }
 
-func (s *Scheduler) remove(id string, entry cron.EntryID) {
+func (s *Scheduler) remove(id string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	s.cron.Remove(entry)
-	s.ids.Delete(id)
+	if entry, ok := s.ids.Load(id); ok {
+		s.cron.Remove(entry.(cron.EntryID))
+		s.ids.Delete(id)
+	}
 }

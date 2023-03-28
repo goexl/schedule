@@ -1,9 +1,5 @@
 package schedule
 
-import (
-	"github.com/robfig/cron/v3"
-)
-
 type remove struct {
 	scheduler *Scheduler
 	params    *removeParams
@@ -17,9 +13,9 @@ func newRemove(scheduler *Scheduler, params *removeParams) *remove {
 }
 
 func (r *remove) Do() {
-	r.scheduler.ids.Range(func(key, value any) bool {
+	r.scheduler.ids.Range(func(key, _ any) bool {
 		if r.check(key.(string)) {
-			r.scheduler.remove(key.(string), value.(cron.EntryID))
+			r.scheduler.remove(key.(string))
 		}
 
 		return true

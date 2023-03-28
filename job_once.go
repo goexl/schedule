@@ -46,12 +46,12 @@ func (jo *jobOnce) Run() {
 	}
 
 	// 删除原来的任务，确保不会再被执行
-	jo.scheduler.Remove(*jo.id)
+	jo.scheduler.remove(*jo.id)
 	jo.deleted = true
 }
 
 func (jo *jobOnce) cleanup() {
 	if !jo.deleted {
-		jo.scheduler.Remove(*jo.id)
+		jo.scheduler.remove(*jo.id)
 	}
 }
