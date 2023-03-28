@@ -20,8 +20,13 @@ func newAddBuilder(scheduler *Scheduler, worker worker, params *params) *addBuil
 	}
 }
 
-func (ab *addBuilder) Id(id any) *addBuilder {
-	ab.self.id = gox.ToString(id)
+func (ab *addBuilder) Id(value any) *addBuilder {
+	switch target := value.(type) {
+	case id:
+		ab.self.id = gox.ToString(target.TaskId())
+	default:
+		ab.self.id = gox.ToString(target)
+	}
 
 	return ab
 }

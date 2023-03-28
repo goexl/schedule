@@ -51,24 +51,8 @@ func (s *Scheduler) Stop() {
 	}
 }
 
-func (s *Scheduler) Remove(ids ...any) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	for _, _id := range ids {
-		taskId := ""
-		switch target := _id.(type) {
-		case id:
-			taskId = target.Id()
-		default:
-			taskId = gox.ToString(target)
-		}
-
-		if entry, ok := s.ids.Load(taskId); ok {
-			s.cron.Remove(entry.(cron.EntryID))
-			s.ids.Delete(taskId)
-		}
-	}
+func (s *Scheduler) Remove() *removeBuilder {
+	return newRemoveBuilder(s)
 }
 
 func (s *Scheduler) Clear() {
@@ -90,4 +74,12 @@ func (s *Scheduler) Contains(id any) (contains bool) {
 
 func (s *Scheduler) Count() int {
 	return len(s.cron.Entries())
+}
+
+func (s *Scheduler) remove(id string, entry cron.EntryID) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	s.cron.Remove(entry)
+	s.ids.Delete(id)
 }
