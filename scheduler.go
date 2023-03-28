@@ -51,14 +51,23 @@ func (s *Scheduler) Stop() {
 	}
 }
 
-func (s *Scheduler) Remove(id any) {
+func (s *Scheduler) Remove(ids ...any) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	id = gox.ToString(id)
-	if entry, ok := s.ids.Load(id); ok {
-		s.cron.Remove(entry.(cron.EntryID))
-		s.ids.Delete(id)
+	for _, _id := range ids {
+		taskId := ""
+		switch target := _id.(type) {
+		case id:
+			taskId = target.Id()
+		default:
+			taskId = gox.ToString(target)
+		}
+
+		if entry, ok := s.ids.Load(taskId); ok {
+			s.cron.Remove(entry.(cron.EntryID))
+			s.ids.Delete(taskId)
+		}
 	}
 }
 
