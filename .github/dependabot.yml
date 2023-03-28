@@ -10,14 +10,3 @@ updates:
       - storezhang
     reviewers:
       - storezhang
-
-  - package-ecosystem: npm
-    directory: /doc
-    schedule:
-      interval: weekly
-    pull-request-branch-name:
-      separator: "-"
-    assignees:
-      - storezhang
-    reviewers:
-      - storezhang
