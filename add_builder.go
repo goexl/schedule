@@ -59,8 +59,14 @@ func (ab *addBuilder) Random() (builder *randomBuilder) {
 	return
 }
 
-func (ab *addBuilder) Limit() *limitBuilder {
+func (ab *addBuilder) Limit() *limitBuilder[*addBuilder] {
 	return newLimitBuilder(ab)
+}
+
+func (ab *addBuilder) Unlimited() *addBuilder {
+	ab.self.limit = newUnlimitedParams()
+
+	return ab
 }
 
 func (ab *addBuilder) Unique() *addBuilder {

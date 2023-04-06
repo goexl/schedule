@@ -27,6 +27,8 @@ func newAddParams(scheduler *Scheduler, worker worker) (add *addParams) {
 func (ap *addParams) checkLimit(scheduler *Scheduler) (err error) {
 	if nil != ap.limit {
 		err = ap.limit.check(scheduler)
+	} else {
+		err = scheduler.checkLimit()
 	}
 
 	return

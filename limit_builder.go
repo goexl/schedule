@@ -1,44 +1,49 @@
 package schedule
 
-type limitBuilder struct {
+type limitBuilder[T limitType] struct {
 	params  *limitParams
-	builder *addBuilder
+	builder T
 }
 
-func newLimitBuilder(builder *addBuilder) *limitBuilder {
-	return &limitBuilder{
+func newLimitBuilder[T limitType](builder T) *limitBuilder[T] {
+	return &limitBuilder[T]{
 		params:  newLimitParams(),
 		builder: builder,
 	}
 }
 
-func (lb *limitBuilder) Cpu(percent float64) *limitBuilder {
+func (lb *limitBuilder[T]) Cpu(percent float64) *limitBuilder[T] {
 	lb.params.cpu = percent
 
 	return lb
 }
 
-func (lb *limitBuilder) Memory(percent float64) *limitBuilder {
+func (lb *limitBuilder[T]) Memory(percent float64) *limitBuilder[T] {
 	lb.params.memory = percent
 
 	return lb
 }
 
-func (lb *limitBuilder) Process(count int) *limitBuilder {
+func (lb *limitBuilder[T]) Process(count int) *limitBuilder[T] {
 	lb.params.process = count
 
 	return lb
 }
 
-func (lb *limitBuilder) Max(max int) *limitBuilder {
+func (lb *limitBuilder[T]) Max(max int) *limitBuilder[T] {
 	lb.params.max = max
 
 	return lb
 }
 
-func (lb *limitBuilder) Build() (builder *addBuilder) {
-	lb.builder.self.limit = lb.params
-	builder = lb.builder
+func (lb *limitBuilder[T]) Build() (t T) {
+	switch target := any(lb.builder).(type) {
+	case *builder:
+		target.params.limit = lb.params
+	case *addBuilder:
+		target.self.limit = lb.params
+	}
+	t = lb.builder
 
 	return
 }

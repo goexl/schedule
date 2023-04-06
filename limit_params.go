@@ -27,6 +27,15 @@ func newLimitParams() *limitParams {
 	}
 }
 
+func newUnlimitedParams() *limitParams {
+	return &limitParams{
+		cpu:     math.MaxFloat64,
+		memory:  math.MaxFloat64,
+		process: math.MaxInt,
+		max:     math.MaxInt,
+	}
+}
+
 func (lp *limitParams) check(scheduler *Scheduler) (err error) {
 	if ce := lp.checkCount(scheduler); nil != ce {
 		err = ce

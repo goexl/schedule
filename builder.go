@@ -26,6 +26,10 @@ func (b *builder) Unique() *builder {
 	return b
 }
 
+func (b *builder) Limit() *limitBuilder[*builder] {
+	return newLimitBuilder(b)
+}
+
 func (b *builder) Build() *Scheduler {
 	return newScheduler(b.params)
 }

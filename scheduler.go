@@ -85,3 +85,11 @@ func (s *Scheduler) remove(id string) {
 		s.ids.Delete(id)
 	}
 }
+
+func (s *Scheduler) checkLimit() (err error) {
+	if nil != s.params.limit {
+		err = s.params.limit.check(s)
+	}
+
+	return
+}
