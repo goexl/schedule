@@ -3,7 +3,7 @@ package schedule
 import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 	"github.com/robfig/cron/v3"
 )
 
@@ -11,10 +11,10 @@ var _ cron.Job = (*jobDefault)(nil)
 
 type jobDefault struct {
 	worker worker
-	logger simaqian.Logger
+	logger log.Logger
 }
 
-func newDefaultJob(worker worker, logger simaqian.Logger) *jobDefault {
+func newDefaultJob(worker worker, logger log.Logger) *jobDefault {
 	return &jobDefault{
 		worker: worker,
 		logger: logger,

@@ -6,7 +6,7 @@ import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
 	"github.com/goexl/gox/rand"
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 	"github.com/robfig/cron/v3"
 )
 
@@ -15,10 +15,10 @@ var _ cron.Schedule = (*scheduleDuration)(nil)
 type scheduleDuration struct {
 	params *addParams
 	self   *durationParams
-	logger simaqian.Logger
+	logger log.Logger
 }
 
-func newScheduleDuration(params *addParams, self *durationParams, logger simaqian.Logger) *scheduleDuration {
+func newScheduleDuration(params *addParams, self *durationParams, logger log.Logger) *scheduleDuration {
 	return &scheduleDuration{
 		params: params,
 		self:   self,

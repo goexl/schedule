@@ -1,7 +1,7 @@
 package schedule
 
 import (
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 )
 
 type builder struct {
@@ -14,7 +14,7 @@ func newBuilder() *builder {
 	}
 }
 
-func (b *builder) Logger(logger simaqian.Logger) *builder {
+func (b *builder) Logger(logger log.Logger) *builder {
 	b.params.logger = logger
 
 	return b

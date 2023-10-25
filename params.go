@@ -1,17 +1,17 @@
 package schedule
 
 import (
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 )
 
 type params struct {
-	logger simaqian.Logger
+	logger log.Logger
 	unique bool
 	limit  *limitParams
 }
 
 func newParams() *params {
 	return &params{
-		logger: simaqian.Default(),
+		logger: log.New().Apply(),
 	}
 }

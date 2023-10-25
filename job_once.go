@@ -3,7 +3,7 @@ package schedule
 import (
 	"github.com/goexl/gox"
 	"github.com/goexl/gox/field"
-	"github.com/goexl/simaqian"
+	"github.com/goexl/log"
 )
 
 type jobOnce struct {
@@ -11,12 +11,12 @@ type jobOnce struct {
 	scheduler *Scheduler
 	worker    worker
 
-	logger   simaqian.Logger
+	logger   log.Logger
 	deleted  bool
 	executed bool
 }
 
-func newOnceJob(id *string, scheduler *Scheduler, worker worker, logger simaqian.Logger) *jobOnce {
+func newOnceJob(id *string, scheduler *Scheduler, worker worker, logger log.Logger) *jobOnce {
 	return &jobOnce{
 		id:        id,
 		scheduler: scheduler,
