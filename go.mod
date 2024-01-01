@@ -7,7 +7,7 @@ require (
 	github.com/goexl/gox v0.3.8
 	github.com/goexl/log v0.0.7
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/shirou/gopsutil/v3 v3.23.11
+	github.com/shirou/gopsutil/v3 v3.23.12
 )
 
 require (
