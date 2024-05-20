@@ -37,18 +37,22 @@ func (s *Scheduler) Add(worker worker) *addBuilder {
 	return newAddBuilder(s, worker, s.params)
 }
 
-func (s *Scheduler) Start() {
+func (s *Scheduler) Start() (err error) {
 	if !s.started {
 		s.cron.Start()
 		s.started = true
 	}
+
+	return
 }
 
-func (s *Scheduler) Stop() {
+func (s *Scheduler) Stop() (err error) {
 	if !s.stopped {
 		s.cron.Stop()
 		s.stopped = true
 	}
+
+	return
 }
 
 func (s *Scheduler) Remove() *removeBuilder {
