@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/goexl/exc"
+	"github.com/goexl/exception"
 	"github.com/goexl/gox/field"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/mem"
@@ -54,7 +54,10 @@ func (lp *limitParams) checkMemory() (err error) {
 	if vms, vme := mem.VirtualMemory(); nil != vme {
 		err = vme
 	} else if vms.UsedPercent >= lp.memory {
-		err = exc.NewFields("内存限制不通过", field.New("memory", vms.UsedPercent), field.New("limit", lp.memory))
+		message := "内存限制不通过"
+		memory := field.New("memory", vms.UsedPercent)
+		limit := field.New("limit", lp.memory)
+		err = exception.New().Message(message).Field(memory, limit).Build()
 	}
 
 	return
@@ -64,7 +67,10 @@ func (lp *limitParams) checkCpu() (err error) {
 	if percent, pe := cpu.Percent(time.Second, false); nil != pe {
 		err = pe
 	} else if percent[0] >= lp.cpu {
-		err = exc.NewFields("Cpu限制不通过", field.New("cpu", percent[0]), field.New("limit", lp.cpu))
+		message := "Cpu限制不通过"
+		_cpu := field.New("cpu", percent[0])
+		limit := field.New("limit", lp.cpu)
+		err = exception.New().Message(message).Field(_cpu, limit).Build()
 	}
 
 	return
@@ -74,7 +80,10 @@ func (lp *limitParams) checkProcess() (err error) {
 	if ids, pe := process.Pids(); nil != pe {
 		err = pe
 	} else if len(ids) >= lp.process {
-		err = exc.NewFields("进程数量限制不通过", field.New("process", len(ids)), field.New("limit", lp.process))
+		message := "进程数量限制不通过"
+		_process := field.New("process", lp.process)
+		limit := field.New("limit", lp.process)
+		err = exception.New().Message(message).Field(_process, limit).Build()
 	}
 
 	return
@@ -83,7 +92,10 @@ func (lp *limitParams) checkProcess() (err error) {
 func (lp *limitParams) checkCount(scheduler *Scheduler) (err error) {
 	count := scheduler.Count()
 	if count > lp.max {
-		err = exc.NewFields("任务数量限制不通过", field.New("count", count), field.New("limit", lp.max))
+		message := "任务数量限制不通过"
+		_count := field.New("count", count)
+		limit := field.New("limit", lp.max)
+		err = exception.New().Message(message).Field(_count, limit).Build()
 	}
 
 	return

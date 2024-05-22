@@ -12,6 +12,6 @@ func newAdd(scheduler *Scheduler, params *addParams) *add {
 	}
 }
 
-func (a *add) Do() (string, error) {
+func (a *add) Apply() (string, error) {
 	return a.scheduler.add(a.params)
 }

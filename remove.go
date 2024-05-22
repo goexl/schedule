@@ -12,7 +12,7 @@ func newRemove(scheduler *Scheduler, params *removeParams) *remove {
 	}
 }
 
-func (r *remove) Do() {
+func (r *remove) Apply() {
 	r.scheduler.ids.Range(func(key, _ any) bool {
 		if r.check(key.(string)) {
 			r.scheduler.remove(key.(string))
