@@ -1,10 +1,11 @@
 module github.com/goexl/schedule
 
 go 1.21
+toolchain go1.23.1
 
 require (
 	github.com/goexl/exception v0.0.1
-	github.com/goexl/gox v0.4.6
+	github.com/goexl/gox v1.8.5
 	github.com/goexl/log v0.0.7
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil/v3 v3.24.5
