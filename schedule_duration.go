@@ -37,7 +37,7 @@ func (sd *scheduleDuration) Next(from time.Time) (next time.Time) {
 	if "" != sd.params.name {
 		fields.Add(field.New("name", sd.params.name))
 	}
-	sd.logger.Debug("任务调度", fields...)
+	sd.logger.Debug("任务调度", fields[0], fields[1:]...)
 
 	return
 }

@@ -35,7 +35,7 @@ func (st *scheduleTime) Next(_ time.Time) (next time.Time) {
 	if "" != st.params.name {
 		fields.Add(field.New("name", st.params.name))
 	}
-	st.logger.Debug("任务调度", fields...)
+	st.logger.Debug("任务调度", fields[0], fields[1:]...)
 
 	return
 }

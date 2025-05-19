@@ -40,9 +40,10 @@ func (jo *jobOnce) Run() {
 		field.New("worker", jo.worker),
 	}
 	if err := jo.worker.Run(); nil != err {
-		jo.logger.Warn("任务执行出错", fields.Add(field.Error(err))...)
+		errors := fields.Add(field.Error(err))
+		jo.logger.Warn("任务执行出错", errors[0], errors[1:]...)
 	} else {
-		jo.logger.Debug("任务执行成功", fields...)
+		jo.logger.Debug("任务执行成功", fields[0], fields[1:]...)
 	}
 
 	// 删除原来的任务，确保不会再被执行
