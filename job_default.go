@@ -32,8 +32,9 @@ func (jd *jobDefault) Run() {
 		field.New("worker", jd.name),
 	}
 	if err := jd.worker.Run(); nil != err {
-		jd.logger.Warn("任务执行出错", fields.Add(field.Error(err))...)
+		errors := fields.Add(field.Error(err))
+		jd.logger.Warn("任务执行出错", errors[0], errors[1:]...)
 	} else {
-		jd.logger.Debug("任务执行成功", fields...)
+		jd.logger.Debug("任务执行成功", fields[0], fields[1:]...)
 	}
 }
