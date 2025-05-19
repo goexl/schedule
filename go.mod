@@ -3,7 +3,7 @@ module github.com/goexl/schedule
 go 1.24
 
 require (
-	github.com/goexl/exception v0.0.3
+	github.com/goexl/exception v0.0.4
 	github.com/goexl/gox v1.9.2
 	github.com/goexl/log v0.1.0
 	github.com/robfig/cron/v3 v3.0.1
